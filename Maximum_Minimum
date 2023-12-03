@@ -1,0 +1,33 @@
+#include<stdio.h>
+#include<stdio.h>
+#include<stdlib.h>
+#include<time.h>
+#define SIZE 10  //10 지정
+int main(void) {
+	int prices[SIZE] = { 0 };
+	int i, minimum;  //인덱스를 증가시킬 i와 최소값
+	int maximum;     //최대값
+	printf("학번 : 202104017  이름 : 박윤미\n");  //학번과 이름 출력
+	printf("---------------------\n");
+	printf("1 2 3 4 5 6 7 8 9 10\n");  //1~10 출력
+	printf("---------------------\n");
+	srand((unsigned)time(NULL));  //숫자 1~100까지 중에서 10개의 숫자 랜덤으로 출력
+	for (i = 0; i < SIZE; i++) {
+		prices[i] = (rand() % 100) + 1;
+		printf("%-3d", prices[i]);
+	}
+	printf("\n\n");
+	minimum = prices[0];  //첫 번째 배열 원소를 최소값으로 가정
+	maximum = prices[0];  //첫 번째 배열 원소를 최대값으로 가정
+	for (i = 1; i < SIZE; i++)
+	{
+		if (prices[i] < minimum)  //현재의 최소값보다 배열 원소가 작으면, 배열 원소를 최소값으로 복사
+			minimum = prices[i];
+		if (prices[i] > maximum)  //현재의 최대값보다 배열 원소가 작으면, 배열 원소를 최대값으로 복사
+			maximum = prices[i];
+	}
+	printf("최소값은 %d입니다\n", minimum);  //최소값 출력
+	printf("최대값은 %d입니다\n", maximum);  //최대값 출력
+	return 0;
+
+}
