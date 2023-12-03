@@ -1,0 +1,308 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<time.h>
+#pragma warning (disable : 4996)
+
+void cafe_coffee(int c);  //커피 결제 함수
+void cafe_smoothie(int c);  //스무디 결제 함수
+void cafe_milk(int c);  //밀크티 결제 함수
+
+int main(void) {
+	int menu = 0;  //사용자의 메뉴 선택 입력
+	int	coffee, smoothie, milk;  //커피, 스무디, 밀크티 메뉴 입력
+
+	printf("안녕하세요 공차입니다. 메뉴를 선택해주세요\n");
+	printf("1. 커피\n");
+	printf("2. 스무디\n");
+	printf("3. 밀크티\n");
+	printf("4. 종료\n");
+	printf("번호를 입력해주세요 : ");
+	scanf("%d", &menu);  //사용자가 메뉴 선택
+
+	switch (menu) {
+	case 1:  //1 선택시
+		printf("-------커피-------\n");  //커피 메뉴 출력
+		printf("1. 아메리카노(3500)\n");
+		printf("2. 카페라떼(4000)\n");
+		printf("3. 카라멜라떼(4500)\n");
+		printf("4. 종료\n");
+		printf("선택해주세요 : ");
+		scanf("%d", &coffee);  //사용자가 커피 메뉴 선택
+
+		cafe_coffee(coffee);  //값에 의한 호출
+		break;
+	case 2:  //2 선택시
+		printf("-------스무디-------\n");  //스무디 메뉴 출력
+		printf("1. 망고스무디(5300)\n");
+		printf("2. 청포도 스무디(4800)\n");
+		printf("3. 초코 스무디(4500)\n");
+		printf("4. 종료\n");
+		printf("선택해주세요 : ");
+		scanf("%d", &smoothie);  //사용자가 스무디 메뉴 선택
+
+		cafe_smoothie(smoothie);  //값에 의한 호출
+		break;
+	case 3:  //3 선택시
+		printf("-------밀크티-------\n");  //밀크티 메뉴 출력
+		printf("1. 블랙 밀크티(4000)\n");
+		printf("2. 타로 밀크티(4000)\n");
+		printf("3. 초콜렛 밀크티(4000)\n");
+		printf("4. 종료\n");
+		printf("선택해주세요 : ");
+		scanf("%d", &milk);  //사용자가 밀크티 메뉴 선택
+
+		cafe_milk(milk);  //값에 의한 호출
+		break;
+	case 4:  //4 선택시
+		printf("감사합니다.\n");
+		break;  //switch문을 빠져나옴
+	default:  //1~4외의 다른 값 입력 시
+		printf("잘못 입력하셨습니다.\n");
+		break;  //switch문을 빠져나옴
+	}
+	return 0;  //종료
+}
+
+void cafe_coffee(int c) {  //값에 의한 호출(c는 값을 복사해서 전달)
+	FILE* fp;  //fp 파일 포인터
+	int money, change, ice, order_num;  //투입 금액, 잔돈, 얼음, 주문번호 변수 생성
+	srand(time(0));  //프로그램을 실행할 때마다 숫자가 다르게 나오기 위해
+	order_num = rand() % 100;  //주문번호를 위한 랜덤값 생성
+	int ame = 3500, latte = 4000, clatte = 4500; //각각 아메리카노=3500, 카페라떼=4000, 카라멜라떼=4500
+	if (c == 4) {  //4 입력시
+		printf("감사합니다.\n");
+		return 0;  //종료
+	}
+	while (1) {
+		printf("얼음 양을 선택해주세요(1~100%%) : ");
+		scanf("%d", &ice);  //얼음 양 입력
+		if (ice > 0 && ice <= 100) {  //얼음 양이 0~100일 때
+			break;  //while문을 빠져나옴
+		}
+		else {  //그렇지 않다면
+			printf("범위를 벗어났습니다. 다시 입력해주세요.\n");  //while문 다시 반복
+		}
+	}
+	while (c) {
+		printf("금액을 투입하세요 : ");
+		scanf("%d", &money);  //투입할 금액 입력
+		switch (c) {
+		case 1:  //c=1일 때
+			change = money - ame;  //잔돈 = 투입 금액 - 아메리카노 값
+			break;  //switch문을 빠져나옴
+
+		case 2:  //c=2일 때
+			change = money - latte;  //잔돈 = 투입 금액 - 카페라떼 값
+			break;  //switch문을 빠져나옴
+
+		case 3:  //c=3일 때
+			change = money - clatte;  //잔돈 = 투입 금액 - 카라멜라떼 값
+			break;  //switch문을 빠져나옴
+		default:  //그 외
+			printf("다시 투입하세요\n ");
+		}
+		if (change >= 0) {  //잔돈 값이 0 이상이라면
+
+			fp = fopen("receipt.txt", "w");  //영수증 메모장 출력, 실행할 때마다 내용 초기화
+			/*아래는 메모장에 출력될 내용*/
+			fprintf(fp, "주문 번호 : %d번\n", order_num);  //주문번호
+			fprintf(fp, "-------메뉴-------\n");  //커피 메뉴 출력
+			fprintf(fp, "1. 아메리카노(3500)\n");
+			fprintf(fp, "2. 카페라떼(4000)\n");
+			fprintf(fp, "3. 카라멜라떼(4500)\n");
+			fprintf(fp, "메뉴 번호 : %d번\n", c);  //사용자가 입력한 번호 출력
+			fprintf(fp, "얼음 양 : %d%%\n", ice);  //사용자가 입력한 얼음 양 출력
+			fprintf(fp, "투입 금액 : %d원\n", money);  //사용자가 입력한 금액 출력
+			fprintf(fp, "거스름 돈 : %d원\n", change);  //계산한 거스름돈 출력
+			fclose(fp);  //파일 닫기
+
+			printf("\n영수증이 출력되었습니다. 잔돈은\n");  //출력 화면에 잔돈 출력
+			printf("오천원 %d장\n", change / 5000);  //잔돈에서 5000을 나눈 값
+			change %= 5000;  //나눈 후 나머지 값
+			printf("천원 %d장\n", change / 1000);  //나머지 값에서 1000을 나눈 값
+			change %= 1000;  //나눈 후 나머지 값
+			printf("오백원 %d개\n", change / 500);  //나머지 값에서 500을 나눈 값
+			change %= 500;  //나눈 후 나머지 값
+			printf("백원 %d개\n", change / 100);  //나머지 값에서 100을 나눈 값
+			printf("입니다.감사합니다.\n");
+
+			break;  //while문 빠져나옴
+		}
+		else {  //잔돈 값이 0 이상이 아니라면
+			change = -change;  //-값을 +로 전환하여
+			printf("%d원이 부족합니다.\n", change);  //부족한 금액 출력
+			continue;  //다시 반복
+		}
+	}
+}
+
+void cafe_smoothie(int c) {  //값에 의한 호출(c는 값을 복사해서 전달)
+	FILE* fp;  //fp 파일 포인터
+	int money, change, ice, order_num, sugar;  //투입 금액, 잔돈, 얼음, 주문번호, 당도 변수 생성
+	srand(time(0));  //프로그램을 실행할 때마다 숫자가 다르게 나오기 위해
+	order_num = rand() % 100;  //주문번호를 위한 랜덤값 생성
+	int man = 5300, grape = 4800, choco = 4500;  //각각 망고스무디=5300, 청포도스무디=4800, 초코스무디=4500
+	if (c == 4) {  //4 입력시
+		printf("감사합니다.\n");
+		return 0;  //종료
+	}
+	while (1) {
+		printf("얼음 양을 선택해주세요(1~100%%) : ");
+		scanf("%d", &ice);  //얼음 양 입력
+		if (ice > 0 && ice <= 100) {  //얼음 양이 0~100일 때
+			break;  //while문을 빠져나옴
+		}
+		else {  //그렇지 않다면
+			printf("범위를 벗어났습니다. 다시 입력해주세요.\n");  //while문 다시 반복
+		}
+	}
+	while (1) {
+		printf("당도를 선택해주세요(1~100%%) : ");
+		scanf("%d", &sugar); //당도 입력
+		if (sugar > 0 && sugar <= 100) {   //당도가 0~100일 때
+			break;  //while문을 빠져나옴
+		}
+		else {  //그렇지 않다면
+			printf("범위를 벗어났습니다. 다시 입력해주세요.\n");  //while문 다시 반복
+		}
+	}
+	while (c) {
+		printf("금액을 투입하세요 : ");  //투입할 금액 입력
+		scanf("%d", &money);
+		switch (c) {
+		case 1:  //c=1일 때
+			change = money - man;  //잔돈 = 투입 금액 - 망고스무디 값
+			break;
+
+		case 2:  //c=2일 때
+			change = money - grape;  //잔돈 = 투입 금액 - 청포도스무디 값
+			break;
+
+		case 3:  //c=3일 때
+			change = money - choco;  //잔돈 = 투입 금액 - 초코스무디 값
+			break;
+		default:  //그 외
+			printf("다시 투입하세요\n ");
+		}
+		if (change >= 0) {  //잔돈 값이 0 이상이라면
+
+			fp = fopen("receipt.txt", "w");  //영수증 메모장 출력, 실행할 때마다 내용 초기화
+			/*아래는 메모장에 출력될 내용*/
+			fprintf(fp, "주문 번호 : %d번\n", order_num);  //주문번호
+			fprintf(fp, "-------메뉴-------\n");  //스무디 메뉴 출력
+			fprintf(fp, "1. 망고 스무디(5300)\n");
+			fprintf(fp, "2. 청포도 스무디(4800)\n");
+			fprintf(fp, "3. 초코 스무디(4500)\n");
+			fprintf(fp, "메뉴 번호 : %d번\n", c);  //사용자가 입력한 번호 출력
+			fprintf(fp, "얼음 양 : %d%%\n", ice);  //사용자가 입력한 얼음 양 출력
+			fprintf(fp, "당도 : %d%%\n", sugar);  //사용자가 입력한 당도 출력
+			fprintf(fp, "투입 금액 : %d원\n", money);  //사용자가 입력한 금액 출력
+			fprintf(fp, "거스름 돈 : %d원\n", change);  //계산한 거스름돈 출력
+			fclose(fp);  //파일 닫기
+
+			printf("\n영수증이 출력되었습니다. 잔돈은\n");  //출력 화면에 잔돈 출력
+			printf("오천원 %d장\n", change / 5000);  //잔돈에서 5000을 나눈 값
+			change %= 5000;  //나눈 후 나머지 값
+			printf("천원 %d장\n", change / 1000);  //나머지 값에서 1000을 나눈 값
+			change %= 1000;  //나눈 후 나머지 값
+			printf("오백원 %d개\n", change / 500);  //나머지 값에서 500을 나눈 값
+			change %= 500;  //나눈 후 나머지 값
+			printf("백원 %d개\n", change / 100);  //나머지 값에서 100을 나눈 값
+			printf("입니다.감사합니다.\n");
+
+			break;  //while문 빠져나옴
+		}
+		else {  //잔돈 값이 0 이상이 아니라면
+			change = -change;  //-값을 +로 전환하여
+			printf("%d원이 부족합니다.\n", change);  //부족한 금액 출력
+			continue;  //다시 반복
+		}
+	}
+
+}
+
+void cafe_milk(int c) {  //값에 의한 호출(c는 값을 복사해서 전달)
+	FILE* fp;  //fp 파일 포인터
+	int money, change, ice, order_num, sugar;  //투입 금액, 잔돈, 얼음, 주문번호, 당도 변수 생성
+	srand(time(0));  //프로그램을 실행할 때마다 숫자가 다르게 나오기 위해
+	order_num = rand() % 100;  //주문번호를 위한 랜덤값 생성
+	int black = 4000, taro = 4000, choco = 4000; //각각 블랙밀크티=4000, 타로밀크티=4000, 초콜렛밀크티=4000
+	if (c == 4) {  //4 입력시
+		printf("감사합니다.\n");
+		return 0;  //종료
+	}
+	while (1) {
+		printf("얼음 양을 선택해주세요(1~100%%) : ");
+		scanf("%d", &ice);  //얼음 양 입력
+		if (ice > 0 && ice <= 100) {  //얼음 양이 0~100일 때
+			break;  //while문을 빠져나옴
+		}
+		else {  //그렇지 않다면
+			printf("범위를 벗어났습니다. 다시 입력해주세요.\n");  //while문 다시 반복
+		}
+	}
+	while (1) {
+		printf("당도를 선택해주세요(1~100%%) : ");
+		scanf("%d", &sugar); //당도 입력
+		if (sugar > 0 && sugar <= 100) {   //당도가 0~100일 때
+			break;  //while문을 빠져나옴
+		}
+		else {  //그렇지 않다면
+			printf("범위를 벗어났습니다. 다시 입력해주세요.\n");  //while문 다시 반복
+		}
+	}
+	while (c) {
+		printf("금액을 투입하세요 : ");  //투입할 금액 입력
+		scanf("%d", &money);
+		switch (c) {
+		case 1:  //c=1일 때
+			change = money - black;  //잔돈 = 투입 금액 - 블랙밀크티 값
+			break;
+
+		case 2:  //c=2일 때
+			change = money - taro;  //잔돈 = 투입 금액 - 타로밀크티 값
+			break;
+
+		case 3:  //c=3일 때
+			change = money - choco;  //잔돈 = 투입 금액 - 초콜렛밀크티 값
+			break;
+		default:  //그 외
+			printf("다시 투입하세요\n");
+		}
+		if (change >= 0) {  //잔돈 값이 0 이상이라면
+
+			fp = fopen("receipt.txt", "w");  //영수증 메모장 출력, 실행할 때마다 내용 초기화
+			/*아래는 메모장에 출력될 내용*/
+			fprintf(fp, "주문 번호 : %d번\n", order_num);  //주문번호
+			fprintf(fp, "-------메뉴-------\n");  //밀크티 메뉴 출력
+			fprintf(fp, "1. 블랙 밀크티(4000)\n");
+			fprintf(fp, "2. 타로 밀크티(4000)\n");
+			fprintf(fp, "3. 초콜렛 밀크티(4000)\n");
+			fprintf(fp, "메뉴 번호 : %d번\n", c);  //사용자가 입력한 번호 출력
+			fprintf(fp, "얼음 양 : %d%%\n", ice);  //사용자가 입력한 얼음 양 출력
+			fprintf(fp, "당도 : %d%%\n", sugar);  //사용자가 입력한 당도 출력
+			fprintf(fp, "투입 금액 : %d원\n", money);  //사용자가 입력한 금액 출력
+			fprintf(fp, "거스름 돈 : %d원\n", change);  //계산한 거스름돈 출력
+			fclose(fp);  //파일 닫기
+
+			printf("\n영수증이 출력되었습니다. 잔돈은\n");  //출력 화면에 잔돈 출력
+			printf("오천원 %d장\n", change / 5000);  //잔돈에서 5000을 나눈 값
+			change %= 5000;  //나눈 후 나머지 값
+			printf("천원 %d장\n", change / 1000);  //나머지 값에서 1000을 나눈 값
+			change %= 1000;  //나눈 후 나머지 값
+			printf("오백원 %d개\n", change / 500);  //나머지 값에서 500을 나눈 값
+			change %= 500;  //나눈 후 나머지 값
+			printf("백원 %d개\n", change / 100);  //나머지 값에서 100을 나눈 값
+			printf("입니다.감사합니다.\n");
+
+			break;  //while문 빠져나옴
+		}
+		else {  //잔돈 값이 0 이상이 아니라면
+			change = -change;  //-값을 +로 전환하여
+			printf("%d원이 부족합니다.\n", change);  //부족한 금액 출력
+			continue;  //다시 반복
+		}
+
+	}
+
+}
