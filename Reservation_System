@@ -1,0 +1,40 @@
+#include<stdio.h>
+#pragma warning(disable:4996)
+#define SIZE 10  //좌석을 10으로 지정
+int main(void) {
+
+	char ans1;  //좌석 예약 y,n
+	int ans2, i;  //좌석1, 인덱스를 증가 시킬 i
+	int ans3;  //좌석2
+	int seats[SIZE] = {0};
+	printf("학번 : 202104017  이름 : 박윤미\n");  //학번과 이름
+	while (1) {
+		printf("좌석을 예약하시겠습니까?(y 또는 n)");  //좌석 예약 질문 출력
+		scanf("  %c", &ans1);  //y또는 n 입력
+		if (ans1 == 'y') {  //ans1에 y 입력시
+			printf("----------------------\n");
+			printf("1 2 3 4 5 6 7 8 9 10\n");  //자리 1~10 출력
+			printf("----------------------\n");
+			for (i = 0; i < SIZE; i++)
+				printf("%d ", seats[i]);  //좌석 예약 유무 출력 (예약이 되어 있으면 1, 아니면 0 출력)
+			printf("\n");
+			printf("몇 번째 좌석을 예약하시겠습니까?");  //좌석 예약 번호 질문 출력
+			scanf("%d", &ans2);  //첫 번째 자리 예약 숫자 입력
+			scanf("%d", &ans3);  //두 번째 자리 예약 숫자 입력
+			if (ans2 <= 0 || ans2 > SIZE || ans3 <= 0 || ans3 > 10) {  //ans2,3에 1~10 이외의 번호 입력시 
+				printf("1부터 10 사이의 숫자를 입력하세요\n");  //이 문장 출력
+				continue;  //다시 반복
+			}
+			if (seats[ans2 - 1] == 0 && seats[ans3 - 1] == 0) {  //예약되지 않았으면
+				seats[ans2 - 1] = 1;
+				seats[ans3 - 1] = 1;
+				printf("예약되었습니다.\n");  //문장 출력
+			}
+			else         //이미 예약이 되었으면
+				printf("이미 예약된 자리입니다.\n");
+		}
+		else if (ans1 == 'n')  //ans1에 n입력시
+			return 0;  //프로그램 종료
+	}
+	return 0;
+}
