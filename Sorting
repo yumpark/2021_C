@@ -1,0 +1,48 @@
+#include <stdio.h>
+#include<stdlib.h>
+#define SIZE 5
+
+void swap(int* list) {  //입력한 값을 정렬하고 출력하는 함수
+    int i, j, temp, least;  //변수 선언
+    for (i = 0; i < SIZE - 1; i++) {
+        least = i;  //첫 번째 변수 least에 저장
+        for (j = i + 1; j < SIZE; j++) {  
+            if (list[j] < list[least])  //두 번째 변수가 least보다 작으면
+                least = j;  //초기화
+            temp = list[i];  //list[i]와 least[i]를 서로 교환
+            list[i] = list[least];
+            list[least] = temp;
+        }
+    }
+    printf("\n정렬 후 : ");  //정렬 후 문장 출력
+    for (i = 0; i < SIZE; i++) {
+        printf("%d ", list[i]);  //정렬된 대로 출력
+    }
+}
+
+
+void print(int* list) {  //입력한 값을 출력하는 함수
+    printf("정렬 전 : ");  //정렬 전 문장 출력
+    for (int i = 0; i < SIZE; i++) {
+        printf("%d ", list[i]);  //입력했던 숫자 차례대로 출력
+    }
+}
+
+
+int main() {
+    printf("학번 : 202104017 이름 : 박윤미\n");  //학번과 이름
+    printf("총 5개의 정수를 입력하세요\n");  //정수 입력 문장 출력
+
+    int a;
+    int b[5];  //배열
+
+    for (int a = 0; a < SIZE; a++) {
+        printf("%d : ", a + 1);  //"1~5 :" 출력
+       scanf_s("%d", &b[a]);  //숫자 5개 입력
+    }
+
+    print(b);  //print함수 출력
+    swap(b);  //swap함수 출력
+
+    return 0;
+}
