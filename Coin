@@ -1,0 +1,25 @@
+#include<stdio.h>
+#include<time.h>
+
+void Toss_up();
+
+int main() {
+	printf("학번 : 202104017 이름 : 박윤미\n");  //학번과 이름
+	srand((unsigned)time(NULL));
+	printf("==동전 결과==\n"); //==동전 결과==출력
+	Toss_up();//Toss_up 함수
+	return 0;
+}
+void Toss_up() {//Toss_up 함수
+	static int front = 0, back = 0;//변수 front, back 선언
+	for (int i = 0; i < 100; i++) {  //100회 반복
+		int c = rand() % 2;
+		if (c == 0) //만약 c가 0이라면
+			front++; //front 함수는 1씩 증가
+
+		else //그 외의 경우
+			back++; //back 함수가 1 증가
+	}
+	printf("앞면 :%d\n", front);  //앞면 횟수 출력
+	printf("뒷면 :%d\n", back);  //뒷면 횟수 출력
+}
